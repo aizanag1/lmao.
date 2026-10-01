@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 16th Birthday qai!</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            width: 100vw;
+            background-color: #0b1329;
+            overflow-x: hidden;
+        }
+
+        /* Loading Spinner Skrin Penuh (2 Saat) */
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0b1329;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(255, 255, 255, 0.15);
+            border-top: 5px solid #38bdf8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Main Container Panjang Ke Bawah */
+        .presentation-container {
+            width: 100vw;
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        .presentation-container.visible {
+            opacity: 1;
+        }
+
+        /* Setiap Section/Halaman Memanjang Ke Bawah */
+        .slide-section {
+            position: relative;
+            width: 100vw;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f1c3f 0%, #091126 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #f1f5f9;
+            padding: 40px 20px;
+        }
+
+        /* Corak Geometri Biru Gelap */
+        .shape-top-left-1 {
+            position: absolute;
+            top: -10vw;
+            left: -5vw;
+            width: 40vw;
+            height: 40vw;
+            max-width: 500px;
+            max-height: 500px;
+            background-color: #1e3a8a;
+            transform: rotate(35deg);
+            z-index: 1;
+            opacity: 0.6;
+        }
+
+        .shape-top-left-2 {
+            position: absolute;
+            top: -15vw;
+            left: -10vw;
+            width: 50vw;
+            height: 50vw;
+            max-width: 600px;
+            max-height: 600px;
+            background-color: #1e293b;
+            transform: rotate(25deg);
+            z-index: 0;
+            opacity: 0.8;
+        }
+
+        .shape-bottom-left-1 {
+            position: absolute;
+            bottom: -10vw;
+            left: -5vw;
+            width: 35vw;
+            height: 35vw;
+            max-width: 450px;
+            max-height: 450px;
+            background-color: #1e3a8a;
+            transform: rotate(25deg);
+            z-index: 1;
+            opacity: 0.6;
+        }
+
+        .shape-bottom-left-2 {
+            position: absolute;
+            bottom: -15vw;
+            left: -10vw;
+            width: 45vw;
+            height: 45vw;
+            max-width: 550px;
+            max-height: 550px;
+            background-color: #0f172a;
+            transform: rotate(15deg);
+            z-index: 0;
+            opacity: 0.8;
+        }
+
+        /* Garis Bawah */
+        .bottom-line {
+            position: absolute;
+            bottom: 10vh;
+            left: 15vw;
+            right: 15vw;
+            height: 2px;
+            background-color: #3b82f6;
+            opacity: 0.5;
+            z-index: 10;
+        }
+
+        /* Animation Fade-In Semasa Scroll */
+        .fade-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .fade-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* SLAID 1 */
+        .slide1-title {
+            font-size: clamp(50px, 12vw, 110px);
+            font-weight: 800;
+            color: #38bdf8;
+            letter-spacing: 6px;
+            text-shadow: 0 0 10px #38bdf8, 0 0 20px #38bdf8, 0 0 40px #0284c7;
+        }
+
+        /* SLAID 2 */
+        .slide2-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 10;
+        }
+
+        .slide2-title {
+            font-size: clamp(32px, 7vw, 70px);
+            font-weight: 800;
+            color: #f8fafc;
+            line-height: 1.3;
+            max-width: 900px;
+            text-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.08em;
+        }
+
+        .slide2-date {
+            font-size: clamp(18px, 4vw, 28px);
+            font-weight: 600;
+            color: #38bdf8;
+            letter-spacing: 3px;
+            text-shadow: 0 0 8px #38bdf8, 0 0 15px #38bdf8, 0 0 30px #0284c7;
+        }
+
+        .letter-bounce {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(25px);
+            white-space: pre;
+        }
+
+        .letter-bounce.animate {
+            animation: softLetterBounce 0.5s cubic-bezier(0.25, 1.3, 0.5, 1) forwards;
+        }
+
+        @keyframes softLetterBounce {
+            0% {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-6px);
+            }
+            80% {
+                transform: translateY(2px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* SLAID 3 */
+        .slide3-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            max-width: 700px;
+            z-index: 10;
+        }
+
+        .slide3-image-box {
+            width: min(350px, 80vw);
+            height: min(240px, 35vh);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 3px solid #38bdf8;
+        }
+
+        .slide3-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide3-quote-box {
+            background: rgba(15, 23, 42, 0.75);
+            border-left: 5px solid #38bdf8;
+            padding: 25px;
+            border-radius: 0 16px 16px 0;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            width: 100%;
+            min-height: 120px;
+        }
+
+        .quote-text {
+            font-size: clamp(15px, 2.2vw, 20px);
+            color: #e2e8f0;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #38bdf8;
+            margin-left: 3px;
+            vertical-align: middle;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .author-text {
+            margin-top: 12px;
+            text-align: right;
+            font-size: clamp(13px, 1.8vw, 16px);
+            color: #38bdf8;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .author-text.visible {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .bottom-line {
+                left: 8vw;
+                right: 8vw;
+            }
+            .shape-top-left-1, .shape-top-left-2 {
+                width: 70vw;
+                height: 70vw;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Skrin Loading (2 Saat) -->
+    <div class="loading-container" id="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Container Utama Panjang Ke Bawah -->
+    <div class="presentation-container" id="presentation">
+        
+        <!-- SLAID 1 -->
+        <section class="slide-section" id="slide1">
+            <div class="shape-top-left-2"></div>
+            <div class="shape-top-left-1"></div>
+            <div class="shape-bottom-left-2"></div>
+            <div class="shape-bottom-left-1"></div>
+
+            <div class="slide1-title fade-element">Hi</div>
+            <div class="bottom-line"></div>
+        </section>
+
+        <!-- SLAID 2 -->
+        <section class="slide-section" id="slide2">
+            <div class="shape-top-left-2"></div>
+            <div class="shape-top-left-1"></div>
+            <div class="shape-bottom-left-2"></div>
+            <div class="shape-bottom-left-1"></div>
+
+            <div class="slide2-container">
+                <div class="slide2-title" id="bounceText">Happy 16th Birthday qai 🎉</div>
+                <div class="slide2-date fade-element">01/10/2026</div>
+            </div>
+
+            <div class="bottom-line"></div>
+        </section>
+
+        <!-- SLAID 3 -->
+        <section class="slide-section" id="slide3">
+            <div class="shape-top-left-2"></div>
+            <div class="shape-top-left-1"></div>
+            <div class="shape-bottom-left-2"></div>
+            <div class="shape-bottom-left-1"></div>
+
+            <div class="slide3-content">
+                <div class="slide3-image-box fade-element">
+                    <img src="https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=600" alt="Gambar qai">
+                </div>
+                <div class="slide3-quote-box fade-element">
+                    <p class="quote-text"><span id="typedQuote"></span><span class="typing-cursor" id="cursor"></span></p>
+                    <div class="author-text" id="authorText">— aizanagi</div>
+                </div>
+            </div>
+
+            <div class="bottom-line"></div>
+        </section>
+
+    </div>
+
+    <script>
+        // Pecahkan teks Happy 16th Birthday qai
+        const bounceTitle = document.getElementById('bounceText');
+        const textContent = bounceTitle.textContent;
+        bounceTitle.innerHTML = '';
+
+        [...textContent].forEach((char, index) => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.classList.add('letter-bounce');
+            span.style.animationDelay = `${index * 0.04}s`;
+            bounceTitle.appendChild(span);
+        });
+
+        // Teks Ucapan Khas & Penulis
+        const fullQuote = '"happy birthday qai. harap kau lulus exam & spm. JANGAN GAGAL BIO ckap mau jadi fornsic tapi takut mayat (jk). at least improve dari exam pertengah tahun."';
+        let typedIndex = 0;
+        let isTypingStarted = false;
+
+        function typeWriter() {
+            if (typedIndex < fullQuote.length) {
+                document.getElementById('typedQuote').textContent += fullQuote.charAt(typedIndex);
+                typedIndex++;
+                setTimeout(typeWriter, 35);
+            } else {
+                document.getElementById('authorText').classList.add('visible');
+            }
+        }
+
+        // Hilangkan loading screen selepas 2 saat
+        setTimeout(function() {
+            const loading = document.getElementById('loading');
+            const presentation = document.getElementById('presentation');
+            
+            loading.style.opacity = '0';
+            setTimeout(() => {
+                loading.style.display = 'none';
+                presentation.style.display = 'block';
+                setTimeout(() => {
+                    presentation.classList.add('visible');
+                    checkScrollAnimations();
+                }, 50);
+            }, 500);
+        }, 2000);
+
+        // Kesan Animasi semasa scroll
+        const fadeElements = document.querySelectorAll('.fade-element');
+
+        function checkScrollAnimations() {
+            const triggerBottom = window.innerHeight * 0.85;
+
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                if (elementTop < triggerBottom) {
+                    element.classList.add('visible');
+                }
+            });
+
+            const bounceContainer = document.getElementById('bounceText');
+            const bounceTop = bounceContainer.getBoundingClientRect().top;
+            if (bounceTop < triggerBottom) {
+                const letters = bounceContainer.querySelectorAll('.letter-bounce');
+                letters.forEach(letter => letter.classList.add('animate'));
+            }
+
+            const quoteContainer = document.getElementById('typedQuote');
+            const quoteTop = quoteContainer.getBoundingClientRect().top;
+            if (quoteTop < triggerBottom && !isTypingStarted) {
+                isTypingStarted = true;
+                typeWriter();
+            }
+        }
+
+        window.addEventListener('scroll', checkScrollAnimations);
+    </script>
+
+</body>
+</html>
